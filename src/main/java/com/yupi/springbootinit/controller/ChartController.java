@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -42,6 +43,9 @@ public class ChartController {
 
     @Resource
     private ChartService chartService;
+
+    @Resource
+    private RedissonClient redissonClient;
 
     @Resource
     private UserService userService;
@@ -227,8 +231,11 @@ public class ChartController {
      */
     @PostMapping("/gen")
     public BaseResponse<BiReseponse> genChartByAi(@RequestPart("file") MultipartFile multipartFile,
-                                             GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
+                                                 GenChartByAiRequest genChartByAiRequest, HttpServletRequest request) {
 
+        //登录用户
+        User user = userService.getLoginUser(request);
+        redissonClient.getRateLimiter("genChartByAi_"+user.getId());
         // 参数校验
         String goal = genChartByAiRequest.getGoal();
         String name = genChartByAiRequest.getName();
@@ -239,8 +246,7 @@ public class ChartController {
         ThrowUtils.throwIf(goal.length() > 300 || name.length() > 100 || chartType.length() > 100,
                 ErrorCode.PARAMS_ERROR, "参数错误:有参数过长");
 
-        //登录用户
-        User user = userService.getLoginUser(request);
+
 
         String csvData = ExcelUtils.excelToCSV(multipartFile);
 

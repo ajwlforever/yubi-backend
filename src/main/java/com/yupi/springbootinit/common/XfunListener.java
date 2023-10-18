@@ -51,6 +51,12 @@ public class XfunListener extends WebSocketListener {
         super.onOpen(webSocket, response);
     }
 
+    public  void deleteHistory(){
+        historyList = new ArrayList<>();
+    }
+    public void init_chat(){
+        is_finished = false;
+    }
     // 接收到消息如何处理
     @Override
     public void onMessage(@NotNull WebSocket webSocket, @NotNull String text) {
@@ -91,10 +97,10 @@ public class XfunListener extends WebSocketListener {
                 for(MsgDTO msg: historyList){
                     message.append(msg.getContent());
                 }
-
+                deleteHistory();
                 answer = message.toString();
                 //断开连接
-                webSocket.close(3,"客户端断开连接");
+               // webSocket.close(3,"客户端断开连接");
 
 
             }
@@ -135,7 +141,7 @@ public class XfunListener extends WebSocketListener {
         return httpUrl.toString();
     }
 
-
+    // msgs和uid 转成 XfunSendRequest
     public XfunSendRequest getSendRequest(String uid, List<MsgDTO> msgs) {
         XfunSendRequest xfunSendRequest = new XfunSendRequest();
         XfunSendRequest.Header header = new XfunSendRequest.Header();
@@ -157,11 +163,6 @@ public class XfunListener extends WebSocketListener {
 
     /**
      *  发送信息
-     * @param uid
-     * @param msgs
-     * @param webSocketListener
-     * @return
-     * @throws Exception
      */
     public XfunListener sendMsg(String uid, List<MsgDTO> msgs, XfunListener webSocketListener) throws Exception {
         // 获取鉴权url
