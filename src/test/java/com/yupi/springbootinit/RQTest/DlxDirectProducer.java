@@ -38,12 +38,12 @@ public class DlxDirectProducer {
             //老板监听机制
             DeliverCallback deliverCallback1 = (consumerTag, delivery)->{
                 String msg= new String(delivery.getBody(), "UTF-8");
-                channel.basicNack(delivery.getEnvelope().getDeliveryTag(),false,false);
+                //channel.basicNack(delivery.getEnvelope().getDeliveryTag(),false,false);
                 System.out.println("[boss] recieved "+delivery.getEnvelope().getRoutingKey()+":"+msg);};
 
             DeliverCallback deliverCallback2 = (consumerTag, delivery) ->{
                 String msg= new String(delivery.getBody(), "UTF-8");
-                channel.basicNack(delivery.getEnvelope().getDeliveryTag(),false,false);
+                // channel.basicNack(delivery.getEnvelope().getDeliveryTag(),false,false);
                 System.out.println("[od] recieved "+delivery.getEnvelope().getRoutingKey()+":"+msg);};
 
             // 开启监听
