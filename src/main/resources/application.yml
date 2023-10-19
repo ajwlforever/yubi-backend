@@ -2,11 +2,22 @@
 # @author <a href="https://github.com/liyupi">程序员鱼皮</a>
 # @from <a href="https://yupi.icu">编程导航知识星球</a>
 spring:
+
   application:
     name: yubi-backend
   # 默认 dev 环境
   profiles:
     active: dev
+  rabbitmq:
+    host: 127.0.0.1
+    password: guest
+    username: guest
+    port: 5672
+    listener:
+      type: simple
+      simple:
+        default-requeue-rejected: false
+        acknowledge-mode: manual
   # 支持 swagger3
   mvc:
     pathmatch:
@@ -90,6 +101,7 @@ cos:
     secretKey: xxx
     region: xxx
     bucket: xxx
+# rabbitmq 配置
 
 #星火
 xfun:

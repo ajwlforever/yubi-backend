@@ -1,8 +1,10 @@
 package com.yupi.springbootinit;
 
+
 import com.yupi.springbootinit.common.XfunListener;
 import com.yupi.springbootinit.config.XfunConfig;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -43,4 +45,6 @@ public class MainApplication {
                 .hostUrl(xfunConfig.getHostUrl())
                 .appid(xfunConfig.getAppid()).build();
     }
+
+
 }

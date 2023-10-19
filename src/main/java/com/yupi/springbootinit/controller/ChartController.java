@@ -222,6 +222,13 @@ public class ChartController {
         return ResultUtils.success(result);
     }
 
+    @PostMapping("/genasyncmq")
+    public BaseResponse<String> genChartByAiAsyncMq(String msg, HttpServletRequest request) {
+
+        chartService.sendMsgToQueue(msg);
+        return ResultUtils.success(msg);
+    }
+
     /**
      *
      * @param multipartFile
